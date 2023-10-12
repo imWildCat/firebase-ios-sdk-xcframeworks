@@ -149,7 +149,16 @@ write_target () {
     local output=$2
     local comma=$3
     local target="${library}Target"
+    ad_support="$library/_GoogleAppMeasurementIdentitySupport.xcframework.zip"
+    if [ -f "$ad_support" ]; then
+        echo "Removing $ad_support"
+        rm -r "$ad_support"
+    fi
     local dependencies=$(ls -1A $library | grep .xcframework.zip)
+    # echo "$library dependencies: $dependencies"
+    # strip the lien of `_GoogleAppMeasurementIdentitySupport.xcframework.zip` from dependencies
+    # dependencies=$(echo "$dependencies" | sed -E 's/\_GoogleAppMeasurementIdentitySupport.xcframework.zip//g')
+    # echo "$library dependencies: $dependencies"
     local excludes=$(excludes "$(ls -1A $library)")
     # Write to file
     touch $output
